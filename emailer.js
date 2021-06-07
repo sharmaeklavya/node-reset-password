@@ -8,6 +8,8 @@ const auth = async (emailaddress) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "Gmail",
+      port: 465,
+      secure: true,
       auth: {
         user: "errik41@gmail.com",
         pass: password,
