@@ -67,7 +67,7 @@ router.get("/login", async (req, res) => {
   }
 });
 
-router.post("/forgotpassword", async (req, res) => {
+router.get("/forgotpassword", async (req, res) => {
   try {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
