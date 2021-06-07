@@ -16,7 +16,7 @@ const auth = async (emailaddress) => {
       },
     });
     await transporter.sendMail({
-      from: "errik41@gmail.com",
+      from: '"SpotLight 👻" <no-reply@spotlight.ae>',      
       to: emailaddress,
       subject: "Password reset",
       html: `<div style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%); border: 1px solid lightgray; border-radius: 5px; padding: 1rem; text-align: center;">
