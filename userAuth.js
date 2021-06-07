@@ -16,10 +16,7 @@ router.post("/register", async (req, res) => {
       .findOne({ username: req.body.username });
     if (!userData) {
       const salt = await bcrypt.genSalt(10);
-      const hash = bcrypt.hash(req.body.password, salt, (err, res) => {
-        if (err) throw err;
-        else return res;
-      });
+      const hash = bcrypt.hash(req.body.password, salt)
       req.body.password = hash;
       await db.collection("username").insertOne(req.body);
     } else {
