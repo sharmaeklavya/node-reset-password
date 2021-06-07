@@ -4,7 +4,7 @@ const verificationString = randomString({ length: 50 });
 
 const password = process.env.emailPass;
 
-const auth = async () => {
+const auth = async (emailaddress) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "Gmail",
@@ -15,7 +15,7 @@ const auth = async () => {
     });
     await transporter.sendMail({
       from: "errik41@gmail.com", // sender address
-      to: "eklavya092@gmail.com", // list of receivers
+      to: emailaddress, // list of receivers
       subject: "Password reset", // Subject line
       html: `<div style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%); border: 1px solid lightgray; border-radius: 5px; padding: 1rem; text-align:center;">
       <h1 style="font-size:1.2rem; color:salmon;">Verify your email to reset password</h1>
