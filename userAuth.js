@@ -74,7 +74,7 @@ router.post("/forgotpassword", async (req, res) => {
       .collection("username")
       .findOne({ username: req.body.username });
     if (userData) {
-      const authString = auth();
+      const authString = auth(req.body.username);
       await db
         .collection("username")
         .findOneAndUpdate(
