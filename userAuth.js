@@ -81,6 +81,9 @@ router.post("/forgotpassword", async (req, res) => {
           { username: req.body.username },
           { $set: { randomString: authString } }
         );
+      res.status(200).json({
+        message: "Valid User",
+      });
     } else {
       res.status(404).json({
         message: "User not registered",
