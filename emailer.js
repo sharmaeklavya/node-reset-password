@@ -10,13 +10,13 @@ const auth = async (emailaddress) => {
       service: "Gmail",
       auth: {
         user: "errik41@gmail.com",
-        pass: password, 
+        pass: password,
       },
     });
     await transporter.sendMail({
-      from: "errik41@gmail.com", 
-      to: emailaddress, 
-      subject: "Password reset", 
+      from: "errik41@gmail.com",
+      to: emailaddress,
+      subject: "Password reset",
       html: `<div style="position:absolute; top:50%; left:50%; transform: translate(-50%, -50%); border: 1px solid lightgray; border-radius: 5px; padding: 1rem; text-align:center;">
       <h1 style="font-size:1.2rem; color:salmon;">Verify your email to reset password</h1>
       <div style="padding: 1rem; margin: 0.75rem 0; width:300px; height:350px;">
