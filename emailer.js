@@ -17,7 +17,7 @@ const auth = async (emailaddress) => {
       },
     });
     await transporter.sendMail({
-      from: '"SpotPass 😊" <plzdonotrespond@outlook.com>',
+      from: "'SpotPass 😊' <plzdonotrespond@outlook.com>",
       to: emailaddress,
       subject: "Password Reset",
       html: `<div style="margin : 0 auto; width: 450px; border:1px solid lightgray; border-radius:5px; padding:1rem; text-align:center;">
