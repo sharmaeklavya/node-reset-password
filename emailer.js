@@ -6,15 +6,18 @@ const password = process.env.emailPass;
 
 const auth = async (emailaddress) => {
   try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: "errik41@gmail.com",
+    const transporter = nodemailer.createTransport({      
+    host: "smtp-mail.outlook.com", // hostname
+    secureConnection: false, // TLS requires secureConnection to be false
+    port: 587, // port for secure SMTP
+    tls: {ciphers:'SSLv3'},
+    auth: {
+        user: "plzdonotrespond@outlook.com",
         pass: password,
       },
     });
     await transporter.sendMail({
-      from: '"SpotPass 😊" <errik41@gmail.com>',
+      from: '"SpotPass 😊" <plzdonotrespond@outlook.com>',
       to: emailaddress,
       subject: "Password Reset",
       html: `<div style="margin : 0 auto; width: 450px; border:1px solid lightgray; border-radius:5px; padding:1rem; text-align:center;">
