@@ -50,6 +50,8 @@ router.post("/login", async (req, res) => {
       if (isValid) {
         res.status(200).json({
           message: "Login success",
+          name: userData.fullname,
+          email: userData.email,
         });
       } else {
         res.status(401).json({
