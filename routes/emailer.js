@@ -27,7 +27,7 @@ const auth = async (emailaddress) => {
       <div style="padding:1rem; margin:0.75rem auto; width:400px;">
         <img src="https://images.unsplash.com/photo-1590280986931-d675a2cf9b2e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1047&q=80" style="width:100%; height:100%;" alt="recover-password">
       </div>
-      <a href="http://localhost:3000/${verificationString}" style="font-size: 1rem; padding:0.75rem; border:none; border-radius:5px; text-decoration:none; background-color: rgb(76, 175, 75); color: whitesmoke; cursor:pointer;">Reset Now</a>
+      <a href="https://noderesetpassword.herokuapp.com/resetpassword/${verificationString}" style="font-size: 1rem; padding:0.75rem; border:none; border-radius:5px; text-decoration:none; background-color: rgb(76, 175, 75); color: whitesmoke; cursor:pointer;">Reset Now</a>
       </div>`,
     });
   } catch (error) {

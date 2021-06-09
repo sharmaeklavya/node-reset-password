@@ -100,17 +100,14 @@ router.post("/forgotpassword", async (req, res) => {
   }
 });
 
-router.post("/resetpassword", async (req, res) => {
+router.post("/resetpassword/:rsting", async (req, res) => {
   try {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
     });
     const db = client.db("users");
     const userData = await db.collection("username").findOne({
-      $and: [
-        { $or: [{ email: req.body.email }] },
-        { $or: [{ randomString: req.params.randomString }] },
-      ],
+      randomString: req.params.rstring,
     });
     if (userData) {
       await db
