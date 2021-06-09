@@ -3,7 +3,7 @@ const express = require("express");
 const mongodb = require("mongodb");
 const cors = require("cors");
 
-const userAuth = require("./userAuth.js");
+const userAuth = require("./routes/userAuth");
 
 const port = process.env.PORT || 4000;
 

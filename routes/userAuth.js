@@ -13,15 +13,15 @@ router.post("/register", async (req, res) => {
     const db = client.db("users");
     const userData = await db
       .collection("username")
-      .findOne({ username: req.body.username });
+      .findOne({ email: req.body.email });
     if (!userData) {
       const salt = await bcrypt.genSalt(10);
-      const hash = bcrypt.hash(req.body.password, salt, (err, res) => {
-        if (err) throw err;
-        else return res;
-      });
+      const hash = bcrypt.hash(req.body.password, salt);
       req.body.password = hash;
       await db.collection("username").insertOne(req.body);
+      res.status(200).json({
+        message: "User successfully registered",
+      });
     } else {
       res.status(404).json({
         message: "User already registered",
@@ -41,7 +41,7 @@ router.get("/login", async (req, res) => {
     const db = client.db("users");
     const userData = await db
       .collection("username")
-      .findOne({ username: req.body.username });
+      .findOne({ email: req.body.email });
     if (userData) {
       const isValid = await bcrypt.compare(
         req.body.password,
@@ -67,7 +67,7 @@ router.get("/login", async (req, res) => {
   }
 });
 
-router.get("/forgotpassword", async (req, res) => {
+router.post("/forgotpassword", async (req, res) => {
   try {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
@@ -75,18 +75,54 @@ router.get("/forgotpassword", async (req, res) => {
     const db = client.db("users");
     const userData = await db
       .collection("username")
-      .findOne({ username: req.body.username });
+      .findOne({ email: req.body.email });
     if (userData) {
-      const authString = auth();
+      const authString = auth(req.body.email);
       await db
         .collection("username")
         .findOneAndUpdate(
-          { username: req.body.username },
+          { email: req.body.email },
           { $set: { randomString: authString } }
         );
+      res.status(200).json({
+        message: "Valid username",
+      });
     } else {
       res.status(404).json({
         message: "User not registered",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+router.post("/resetpassword", async (req, res) => {
+  try {
+    const client = await MongoClient.connect(dbURL, {
+      useUnifiedTopology: true,
+    });
+    const db = client.db("users");
+    const userData = await db.collection("username").findOne({
+      $and: [
+        { $or: [{ email: req.body.email }] },
+        { $or: [{ randomString: req.params.randomString }] },
+      ],
+    });
+    if (userData) {
+      await db
+        .collection("username")
+        .findOneAndUpdate(
+          { email: req.body.email },
+          { $set: { password: req.body.password } }
+        );
+      res.status(200).json({
+        message: "Password updated",
+      });
+    } else {
+      res.status(404).json({
+        message: "Password not updated",
       });
     }
   } catch (error) {
