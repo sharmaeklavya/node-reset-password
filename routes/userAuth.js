@@ -112,10 +112,7 @@ router.post("/resetpassword/:rsting", async (req, res) => {
     if (userData) {
       await db
         .collection("username")
-        .findOneAndUpdate(
-          { email: req.body.email },
-          { $set: { password: req.body.password } }
-        );
+        .findOneAndUpdate({ password: req.body.password });
       res.status(200).json({
         message: "Password updated",
       });
