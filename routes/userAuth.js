@@ -107,7 +107,11 @@ router.post("/resetpassword", async (req, res) => {
     const userData = await db.collection("username").findOne({
       $and: [
         { $or: [{ email: req.body.email }] },
+<<<<<<< HEAD:routes/userAuth.js
         { $or: [{ randomString: req.params.randomString }] },
+=======
+        { $or: [{ randomString: req.body.randomString }] },
+>>>>>>> 496287fcc72463bfb427652eba504b974d6d81cf:userAuth.js
       ],
     });
     if (userData) {
