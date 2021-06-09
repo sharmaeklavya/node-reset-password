@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
       .findOne({ email: req.body.email });
     if (!userData) {
       const salt = await bcrypt.genSalt(10);
-      const hash = bcrypt.hash(req.body.password, salt);
+      const hash = await bcrypt.hash(req.body.password, salt);
       req.body.password = hash;
       await db.collection("username").insertOne(req.body);
       res.status(200).json({
@@ -45,8 +45,7 @@ router.post("/login", async (req, res) => {
     if (userData) {
       const isValid = await bcrypt.compare(
         req.body.password,
-        userData.password, (err, res) => {
-          
+        userData.password
       );
       if (isValid) {
         res.status(200).json({
