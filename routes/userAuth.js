@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
       .findOne({ email: req.body.email });
     if (!userData) {
       const salt = await bcrypt.genSalt(10);
-      const hash = bcrypt.hash(req.body.password, salt);
+      const hash = await bcrypt.hash(req.body.password, salt);
       req.body.password = hash;
       await db.collection("username").insertOne(req.body);
       res.status(200).json({
@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
