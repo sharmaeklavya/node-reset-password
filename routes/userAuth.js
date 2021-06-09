@@ -45,7 +45,8 @@ router.post("/login", async (req, res) => {
     if (userData) {
       const isValid = await bcrypt.compare(
         req.body.password,
-        userData.password
+        userData.password, (err, res) => {
+          
       );
       if (isValid) {
         res.status(200).json({
