@@ -113,15 +113,26 @@ router.post("/resetpassword/:rstring", async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(req.body.password, salt);
       req.body.password = hash;
-      await db
+      const updated = await db
         .collection("username")
         .updateOne(
           { randomString: req.params.rstring },
           { $set: { password: req.body.password } }
         );
-      res.status(200).json({
-        message: "Password updated",
-      });
+      if (updated) {
+        await db
+          .collection("username")
+          .updateOne(
+            { randomString: req.params.rstring },
+            { $unset: { randomString: 1 } },
+            false,
+            true
+          );
+
+        res.status(200).json({
+          message: "Password updated",
+        });
+      }
     } else {
       res.status(404).json({
         message: "Password not updated",
