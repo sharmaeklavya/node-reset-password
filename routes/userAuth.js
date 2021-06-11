@@ -100,7 +100,7 @@ router.post("/forgotpassword", async (req, res) => {
   }
 });
 
-router.post("/resetpassword/:rsting", async (req, res) => {
+router.post("/resetpassword/:rstring", async (req, res) => {
   try {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
@@ -110,9 +110,15 @@ router.post("/resetpassword/:rsting", async (req, res) => {
       randomString: req.params.rstring,
     });
     if (userData) {
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(req.body.password, salt);
+      req.body.password = hash;
       await db
         .collection("username")
-        .findOneAndUpdate({ password: req.body.password });
+        .updateOne(
+          { randomString: req.params.rstring },
+          { $set: { password: req.body.password } }
+        );
       res.status(200).json({
         message: "Password updated",
       });
