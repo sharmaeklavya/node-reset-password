@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { MongoClient, ObjectID } = require("mongodb");
 const bcrypt = require("bcrypt");
-const auth = require("./emailer");
+const { auth, verificationString } = require("./emailer");
 
 const dbURL = process.env.DBURL || "mongodb://localhost:27017";
 
@@ -79,12 +79,12 @@ router.post("/forgotpassword", async (req, res) => {
       .collection("username")
       .findOne({ email: req.body.email });
     if (userData) {
-      const authString = auth(req.body.email);
+      auth(req.body.email);
       await db
         .collection("username")
         .findOneAndUpdate(
           { email: req.body.email },
-          { $set: { randomString: authString } }
+          { $set: { randomString: verificationString } }
         );
       res.status(200).json({
         message: "Valid username",
