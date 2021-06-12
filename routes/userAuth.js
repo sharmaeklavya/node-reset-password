@@ -100,7 +100,7 @@ router.post("/forgotpassword", async (req, res) => {
   }
 });
 
-router.post("/resetpassword/:rstring", async (req, res) => {
+router.post("/reset/:rstring", async (req, res) => {
   try {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
