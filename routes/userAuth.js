@@ -105,8 +105,8 @@ router.post("/reset-password/:rstring", async (req, res) => {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
     });
-    const db = client.db("users");
-    const userData = await db.collection("reset-password").findOne({
+    const db = client.db("reset-password");
+    const userData = await db.collection("users").findOne({
       randomString: req.params.rstring,
     });
     if (userData) {
