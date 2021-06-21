@@ -10,15 +10,15 @@ router.post("/register", async (req, res) => {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
     });
-    const db = client.db("users");
+    const db = client.db("reset-password");
     const userData = await db
-      .collection("username")
+      .collection("users")
       .findOne({ email: req.body.email });
     if (!userData) {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(req.body.password, salt);
       req.body.password = hash;
-      await db.collection("username").insertOne(req.body);
+      await db.collection("users").insertOne(req.body);
       res.status(200).json({
         message: "User successfully registered",
       });
@@ -38,9 +38,9 @@ router.post("/login", async (req, res) => {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
     });
-    const db = client.db("users");
+    const db = client.db("reset-password");
     const userData = await db
-      .collection("username")
+      .collection("users")
       .findOne({ email: req.body.email });
     if (userData) {
       const isValid = await bcrypt.compare(
@@ -74,14 +74,14 @@ router.post("/forgotpassword", async (req, res) => {
     const client = await MongoClient.connect(dbURL, {
       useUnifiedTopology: true,
     });
-    const db = client.db("users");
+    const db = client.db("reset-password");
     const userData = await db
-      .collection("username")
+      .collection("users")
       .findOne({ email: req.body.email });
     if (userData) {
       auth(req.body.email);
       await db
-        .collection("username")
+        .collection("users")
         .findOneAndUpdate(
           { email: req.body.email },
           { $set: { randomString: verificationString } }
@@ -106,7 +106,7 @@ router.post("/reset/:rstring", async (req, res) => {
       useUnifiedTopology: true,
     });
     const db = client.db("users");
-    const userData = await db.collection("username").findOne({
+    const userData = await db.collection("reset-password").findOne({
       randomString: req.params.rstring,
     });
     if (userData) {
@@ -114,14 +114,14 @@ router.post("/reset/:rstring", async (req, res) => {
       const hash = await bcrypt.hash(req.body.password, salt);
       req.body.password = hash;
       const updated = await db
-        .collection("username")
+        .collection("users")
         .updateOne(
           { randomString: req.params.rstring },
           { $set: { password: req.body.password } }
         );
       if (updated) {
         await db
-          .collection("username")
+          .collection("users")
           .updateOne(
             { randomString: req.params.rstring },
             { $unset: { randomString: 1 } },
